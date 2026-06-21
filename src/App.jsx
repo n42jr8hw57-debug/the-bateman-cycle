@@ -11,9 +11,7 @@ export default function App() {
   const [page, setPage] = useState("dashboard")
 
   const [habits, setHabits] = useState(() => {
-
-    const saved =
-      localStorage.getItem("bateman-habits")
+    const saved = localStorage.getItem("bateman-habits")
 
     if (saved) {
       return JSON.parse(saved)
@@ -38,12 +36,22 @@ export default function App() {
     ]
   })
 
-  useEffect(() => {
-    localStorage.setItem(
-      "bateman-habits",
-      JSON.stringify(habits)
+  const [history, setHistory] = useState(() => {
+    const saved = localStorage.getItem("bateman-history")
+
+    if (saved) {
+      return JSON.parse(saved)
+    }
+
+    return []
+  })
+
+  const [lastResetDate, setLastResetDate] = useState(() => {
+    return (
+      localStorage.getItem("bateman-last-reset") ||
+      new Date().toDateString()
     )
-  }, [habits])
+  })
 
   const completed =
     habits.filter(h => h.done).length
@@ -62,6 +70,74 @@ export default function App() {
       : xp >= 100
       ? "DISCIPLINED"
       : "NOVICE"
+
+  useEffect(() => {
+    localStorage.setItem(
+      "bateman-habits",
+      JSON.stringify(habits)
+    )
+  }, [habits])
+
+  useEffect(() => {
+    localStorage.setItem(
+      "bateman-history",
+      JSON.stringify(history)
+    )
+  }, [history])
+
+  useEffect(() => {
+    localStorage.setItem(
+      "bateman-last-reset",
+      lastResetDate
+    )
+  }, [lastResetDate])
+
+  useEffect(() => {
+
+    const today =
+      new Date().toDateString()
+
+    if (today !== lastResetDate) {
+
+      const yesterday =
+        new Date(lastResetDate)
+
+      const label =
+        yesterday.toLocaleDateString(
+          "en-US",
+          {
+            month: "short",
+            day: "numeric"
+          }
+        )
+
+      const alreadySaved =
+        history.find(
+          item => item.day === label
+        )
+
+      if (!alreadySaved) {
+
+        setHistory(prev => [
+          ...prev,
+          {
+            day: label,
+            score
+          }
+        ])
+      }
+
+      setHabits(prev =>
+        prev.map(habit => ({
+          ...habit,
+          done: false
+        }))
+      )
+
+      setLastResetDate(today)
+    }
+
+  }, [])
 
   const toggle = (index) => {
 
@@ -126,7 +202,6 @@ export default function App() {
       <main className="main">
 
         {page === "dashboard" && (
-
           <Dashboard
             score={score}
             completed={completed}
@@ -135,11 +210,9 @@ export default function App() {
             level={level}
             habits={habits}
           />
-
         )}
 
         {page === "habits" && (
-
           <>
             <AddHabit
               addHabit={addHabit}
@@ -152,32 +225,25 @@ export default function App() {
               editHabit={editHabit}
             />
           </>
-
         )}
 
         {page === "analytics" && (
-
-          <Analytics />
-
+          <Analytics
+            history={history}
+          />
         )}
 
         {page === "settings" && (
-
           <div className="card">
-
             <h2>SETTINGS</h2>
-
             <p>
               More settings coming soon.
             </p>
-
           </div>
-
         )}
 
       </main>
 
     </div>
-
   )
 }

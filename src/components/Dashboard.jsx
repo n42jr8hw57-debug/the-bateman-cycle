@@ -27,6 +27,11 @@ export default function Dashboard({
 
   const bestStreak = currentStreak
 
+  const consistency =
+    total > 0
+      ? Math.round((completed / total) * 100)
+      : 0
+
   return (
     <div>
 
@@ -36,9 +41,9 @@ export default function Dashboard({
 
         <ProgressRing score={score} />
 
-        <p>
+        <div className="hero-subtitle">
           {completed} / {total} completed
-        </p>
+        </div>
 
       </div>
 
@@ -46,7 +51,7 @@ export default function Dashboard({
 
         <div className="card stat-card">
 
-          <h3>XP</h3>
+          <h3>TOTAL XP</h3>
 
           <div className="big-stat">
             {xp}
@@ -79,11 +84,11 @@ export default function Dashboard({
 
       </div>
 
-      <div className="stats-grid">
+      <div className="stats-grid stats-grid-3">
 
         <div className="card stat-card">
 
-          <h3>CURRENT STREAK</h3>
+          <h3>CURRENT</h3>
 
           <div className="big-stat">
             🔥 {currentStreak}
@@ -93,10 +98,20 @@ export default function Dashboard({
 
         <div className="card stat-card">
 
-          <h3>BEST STREAK</h3>
+          <h3>BEST</h3>
 
           <div className="big-stat">
             🏆 {bestStreak}
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>CONSISTENCY</h3>
+
+          <div className="big-stat">
+            ⚡ {consistency}%
           </div>
 
         </div>

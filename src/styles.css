@@ -18,38 +18,61 @@ body{
 /* SIDEBAR */
 
 .sidebar{
-  width:280px;
-  padding:40px 24px;
+  width:190px;
+  padding:24px 18px;
   border-right:1px solid rgba(255,255,255,.05);
   background:#050505;
 }
 
 .sidebar h1{
-  font-size:52px;
+  font-size:42px;
   line-height:.9;
-  margin:0;
-  margin-bottom:24px;
+  margin:0 0 20px 0;
   font-weight:800;
   letter-spacing:-2px;
 }
 
 .sidebar p{
-  opacity:.65;
-  margin-bottom:36px;
+  opacity:.6;
+  margin-bottom:24px;
+  font-size:14px;
 }
 
-.sidebar button{
+.sidebar-nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.nav-btn{
   width:100%;
   text-align:left;
-  margin-bottom:10px;
+  background:transparent;
+  border:none;
+  color:#8f8f8f;
+  padding:12px 14px;
+  border-radius:12px;
+  transition:.2s;
+  font-size:14px;
+}
+
+.nav-btn:hover{
+  background:#161616;
+  color:white;
+}
+
+.active-nav{
+  background:#1c1c1c;
+  color:white;
+  border:1px solid rgba(255,255,255,.08);
 }
 
 /* MAIN */
 
 .main{
   flex:1;
-  padding:44px;
-  max-width:1500px;
+  width:100%;
+  padding:18px;
 }
 
 /* CARDS */
@@ -63,39 +86,39 @@ body{
 
   border:1px solid rgba(255,255,255,.05);
 
-  border-radius:28px;
+  border-radius:22px;
 
-  padding:28px;
+  padding:20px;
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,.35);
+    0 12px 40px rgba(0,0,0,.25);
 
   transition:.25s;
 }
 
 .card:hover{
   border-color:rgba(255,255,255,.08);
-  transform:translateY(-2px);
 }
 
 /* HERO */
 
 .hero{
-  margin-bottom:24px;
   text-align:center;
+  margin-bottom:16px;
+  padding:18px;
 }
 
 .hero h2{
-  font-size:18px;
+  font-size:16px;
   letter-spacing:2px;
   opacity:.8;
+  margin-bottom:8px;
 }
 
-/* SCORE */
-
-.score{
-  font-size:96px;
-  font-weight:800;
+.hero-subtitle{
+  margin-top:4px;
+  opacity:.65;
+  font-size:14px;
 }
 
 /* STATS */
@@ -103,43 +126,46 @@ body{
 .stats-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:24px;
-  margin-top:24px;
+  gap:16px;
+  margin-top:16px;
+}
+
+.stats-grid-3{
+  grid-template-columns:1fr 1fr 1fr;
 }
 
 .stat-card{
-  min-height:180px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  min-height:110px;
+  padding:18px;
 }
 
 .stat-card h3{
   opacity:.55;
-  margin-bottom:18px;
+  margin:0 0 12px 0;
   letter-spacing:1px;
+  font-size:13px;
 }
 
 .big-stat{
-  font-size:42px;
+  font-size:30px;
   font-weight:800;
 }
 
-/* XP BAR */
+/* XP */
 
 .xp-info{
-  margin-top:12px;
+  margin-top:8px;
   opacity:.65;
-  font-size:14px;
+  font-size:13px;
 }
 
 .xp-track{
   width:100%;
-  height:10px;
+  height:8px;
   background:#0a0a0a;
   border-radius:999px;
   overflow:hidden;
-  margin-top:12px;
+  margin-top:8px;
 }
 
 .xp-fill{
@@ -147,46 +173,23 @@ body{
   background:linear-gradient(
     90deg,
     #ffffff,
-    #9c9c9c
+    #9d9d9d
   );
-  transition:.4s;
-}
-
-/* TARGETS */
-
-.targets-card{
-  margin-top:24px;
-}
-
-.targets-card h3{
-  margin-bottom:24px;
-  letter-spacing:1px;
-}
-
-.target-row{
-  display:flex;
-  gap:14px;
-  align-items:center;
-  padding:14px 0;
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-
-.target-row:last-child{
-  border-bottom:none;
 }
 
 /* ACHIEVEMENTS */
 
 .achievements-card{
-  margin-top:24px;
+  margin-top:16px;
 }
 
 .achievement{
   display:flex;
-  gap:14px;
+  gap:12px;
   align-items:center;
-  padding:14px 0;
+  padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:14px;
 }
 
 .achievement:last-child{
@@ -198,7 +201,29 @@ body{
 }
 
 .locked{
-  opacity:.35;
+  opacity:.3;
+}
+
+/* TARGETS */
+
+.targets-card{
+  margin-top:16px;
+}
+
+.targets-card h3{
+  margin-bottom:14px;
+}
+
+.target-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.target-row:last-child{
+  border-bottom:none;
 }
 
 /* HABITS */
@@ -207,11 +232,11 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 0;
+  padding:14px 0;
 }
 
 .habit strong{
-  font-size:16px;
+  font-size:15px;
 }
 
 /* BUTTONS */
@@ -220,15 +245,14 @@ button{
   background:#171717;
   color:white;
   border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
-  padding:12px 16px;
+  border-radius:12px;
+  padding:10px 14px;
   cursor:pointer;
   transition:.2s;
 }
 
 button:hover{
   background:#242424;
-  transform:translateY(-1px);
 }
 
 /* INPUTS */
@@ -237,8 +261,8 @@ input{
   background:#101010;
   color:white;
   border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
-  padding:14px 16px;
+  border-radius:12px;
+  padding:12px 14px;
   width:100%;
 }
 
@@ -247,17 +271,24 @@ input:focus{
   border-color:rgba(255,255,255,.25);
 }
 
+/* ANALYTICS */
+
+.recharts-wrapper{
+  margin-top:12px;
+}
+
 /* PROGRESS RING */
 
 svg{
   display:block;
   margin:auto;
+  transform:scale(.82);
 }
 
 /* SCROLLBAR */
 
 ::-webkit-scrollbar{
-  width:10px;
+  width:8px;
 }
 
 ::-webkit-scrollbar-track{
@@ -269,6 +300,29 @@ svg{
   border-radius:999px;
 }
 
-::-webkit-scrollbar-thumb:hover{
-  background:#333;
+/* MOBILE */
+
+@media (max-width:900px){
+
+  .app{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.05);
+  }
+
+  .main{
+    padding:12px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats-grid-3{
+    grid-template-columns:1fr;
+  }
 }

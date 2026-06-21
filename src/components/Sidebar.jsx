@@ -1,29 +1,64 @@
 import React from "react"
 
-export default function Sidebar({ setPage }) {
+export default function Sidebar({
+  setPage,
+  page
+}) {
+
+  const items = [
+    {
+      id: "dashboard",
+      label: "Dashboard"
+    },
+    {
+      id: "habits",
+      label: "Habits"
+    },
+    {
+      id: "analytics",
+      label: "Analytics"
+    },
+    {
+      id: "settings",
+      label: "Settings"
+    }
+  ]
+
   return (
     <aside className="sidebar">
-      <h1>THE BATEMAN CYCLE</h1>
 
-      <p>TRACK. EXECUTE. REPEAT.</p>
+      <h1>
+        THE BATEMAN CYCLE
+      </h1>
+
+      <p>
+        TRACK. EXECUTE. REPEAT.
+      </p>
 
       <nav className="sidebar-nav">
-        <button onClick={() => setPage("dashboard")}>
-          Dashboard
-        </button>
 
-        <button onClick={() => setPage("habits")}>
-          Habits
-        </button>
+        {items.map((item) => (
 
-        <button onClick={() => setPage("analytics")}>
-          Analytics
-        </button>
+          <button
+            key={item.id}
+            onClick={() => setPage(item.id)}
+            className={
+              page === item.id
+                ? "nav-btn active-nav"
+                : "nav-btn"
+            }
+          >
+            {page === item.id
+              ? "● "
+              : "○ "}
 
-        <button onClick={() => setPage("settings")}>
-          Settings
-        </button>
+            {item.label}
+          </button>
+
+        ))}
+
       </nav>
+
     </aside>
   )
 }

@@ -9,55 +9,55 @@ import {
   Tooltip
 } from "recharts"
 
-export default function Analytics() {
-
-  const data = [
-    { day:"Mon", score:40 },
-    { day:"Tue", score:60 },
-    { day:"Wed", score:50 },
-    { day:"Thu", score:80 },
-    { day:"Fri", score:70 },
-    { day:"Sat", score:90 },
-    { day:"Sun", score:100 }
-  ]
+export default function Analytics({ history }) {
 
   return (
 
-    <div>
+    <div className="card">
 
-      <div className="card">
+      <h2>WEEKLY DISCIPLINE</h2>
 
-        <h2>WEEKLY DISCIPLINE</h2>
+      <div
+        style={{
+          width: "100%",
+          height: "300px"
+        }}
+      >
 
-        <div
-          style={{
-            width:"100%",
-            height:"350px"
-          }}
-        >
+        <ResponsiveContainer>
 
-          <ResponsiveContainer>
+          <LineChart data={history}>
 
-            <LineChart data={data}>
+            <XAxis dataKey="day" />
 
-              <XAxis dataKey="day" />
+            <YAxis
+              domain={[0, 100]}
+            />
 
-              <YAxis />
+            <Tooltip
+  contentStyle={{
+    background:"#0d0d0d",
+    border:"1px solid #222",
+    borderRadius:"16px",
+    color:"#fff",
+    boxShadow:"0 10px 30px rgba(0,0,0,.4)"
+  }}
+  labelStyle={{
+    color:"#fff",
+    fontWeight:"700"
+  }}
+/>
 
-              <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="score"
+              stroke="#ffffff"
+              strokeWidth={3}
+            />
 
-              <Line
-                type="monotone"
-                dataKey="score"
-                stroke="#ffffff"
-                strokeWidth={3}
-              />
+          </LineChart>
 
-            </LineChart>
-
-          </ResponsiveContainer>
-
-        </div>
+        </ResponsiveContainer>
 
       </div>
 
