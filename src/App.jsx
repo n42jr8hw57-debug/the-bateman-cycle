@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar"
 import Dashboard from "./components/Dashboard"
 import HabitList from "./components/HabitList"
 import AddHabit from "./components/AddHabit"
+import Analytics from "./components/Analytics"
 
 export default function App() {
 
@@ -78,6 +79,8 @@ export default function App() {
 
   const addHabit = (name) => {
 
+    if (!name.trim()) return
+
     setHabits([
       ...habits,
       {
@@ -112,26 +115,35 @@ export default function App() {
   }
 
   return (
+
     <div className="app">
 
-      <Sidebar setPage={setPage} />
+      <Sidebar
+        setPage={setPage}
+        page={page}
+      />
 
       <main className="main">
 
         {page === "dashboard" && (
-<Dashboard
-  score={score}
-  completed={completed}
-  total={habits.length}
-  xp={xp}
-  level={level}
-  habits={habits}
-/>
+
+          <Dashboard
+            score={score}
+            completed={completed}
+            total={habits.length}
+            xp={xp}
+            level={level}
+            habits={habits}
+          />
+
         )}
 
         {page === "habits" && (
+
           <>
-            <AddHabit addHabit={addHabit} />
+            <AddHabit
+              addHabit={addHabit}
+            />
 
             <HabitList
               habits={habits}
@@ -140,23 +152,32 @@ export default function App() {
               editHabit={editHabit}
             />
           </>
+
         )}
 
         {page === "analytics" && (
-          <div className="card">
-            <h2>Analytics</h2>
-            <p>Coming soon...</p>
-          </div>
+
+          <Analytics />
+
         )}
 
         {page === "settings" && (
+
           <div className="card">
-            <h2>Settings</h2>
+
+            <h2>SETTINGS</h2>
+
+            <p>
+              More settings coming soon.
+            </p>
+
           </div>
+
         )}
 
       </main>
 
     </div>
+
   )
 }

@@ -1,5 +1,4 @@
 import React from "react"
-
 import ProgressRing from "./ProgressRing"
 import Achievements from "./Achievements"
 
@@ -11,6 +10,22 @@ export default function Dashboard({
   level,
   habits
 }) {
+
+  const nextLevelXP = 100
+
+  const xpPercent = Math.min(
+    (xp / nextLevelXP) * 100,
+    100
+  )
+
+  const streaks = habits.map(h => h.streak || 0)
+
+  const currentStreak =
+    streaks.length > 0
+      ? Math.max(...streaks)
+      : 0
+
+  const bestStreak = currentStreak
 
   return (
     <div>
@@ -45,6 +60,43 @@ export default function Dashboard({
 
           <div className="big-stat">
             {level}
+          </div>
+
+          <div className="xp-info">
+            {xp} / {nextLevelXP} XP
+          </div>
+
+          <div className="xp-track">
+            <div
+              className="xp-fill"
+              style={{
+                width: `${xpPercent}%`
+              }}
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+      <div className="stats-grid">
+
+        <div className="card stat-card">
+
+          <h3>CURRENT STREAK</h3>
+
+          <div className="big-stat">
+            🔥 {currentStreak}
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>BEST STREAK</h3>
+
+          <div className="big-stat">
+            🏆 {bestStreak}
           </div>
 
         </div>

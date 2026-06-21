@@ -55,12 +55,11 @@ body{
 /* CARDS */
 
 .card{
-  background:
-    linear-gradient(
-      180deg,
-      #121212,
-      #0d0d0d
-    );
+  background:linear-gradient(
+    180deg,
+    #121212,
+    #0d0d0d
+  );
 
   border:1px solid rgba(255,255,255,.05);
 
@@ -76,17 +75,19 @@ body{
 
 .card:hover{
   border-color:rgba(255,255,255,.08);
+  transform:translateY(-2px);
 }
 
 /* HERO */
 
 .hero{
   margin-bottom:24px;
+  text-align:center;
 }
 
 .hero h2{
   font-size:18px;
-  letter-spacing:1px;
+  letter-spacing:2px;
   opacity:.8;
 }
 
@@ -115,12 +116,40 @@ body{
 
 .stat-card h3{
   opacity:.55;
-  margin-bottom:20px;
+  margin-bottom:18px;
+  letter-spacing:1px;
 }
 
 .big-stat{
   font-size:42px;
   font-weight:800;
+}
+
+/* XP BAR */
+
+.xp-info{
+  margin-top:12px;
+  opacity:.65;
+  font-size:14px;
+}
+
+.xp-track{
+  width:100%;
+  height:10px;
+  background:#0a0a0a;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.xp-fill{
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    #ffffff,
+    #9c9c9c
+  );
+  transition:.4s;
 }
 
 /* TARGETS */
@@ -131,6 +160,7 @@ body{
 
 .targets-card h3{
   margin-bottom:24px;
+  letter-spacing:1px;
 }
 
 .target-row{
