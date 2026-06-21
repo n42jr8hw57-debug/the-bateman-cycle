@@ -1,32 +1,85 @@
 import React from "react"
 
+import ProgressRing from "./ProgressRing"
+import Achievements from "./Achievements"
+
 export default function Dashboard({
   score,
   completed,
   total,
   xp,
-  level
+  level,
+  habits
 }) {
+
   return (
-    <div className="card hero">
+    <div>
 
-      <h2>THE BATEMAN CYCLE</h2>
+      <div className="card hero">
 
-      <div className="score">
-        {score}%
+        <h2>DISCIPLINE SCORE</h2>
+
+        <ProgressRing score={score} />
+
+        <p>
+          {completed} / {total} completed
+        </p>
+
       </div>
 
-      <p>
-        {completed} / {total} completed
-      </p>
+      <div className="stats-grid">
 
-      <h3>
-        XP: {xp}
-      </h3>
+        <div className="card stat-card">
 
-      <h3>
-        LEVEL: {level}
-      </h3>
+          <h3>XP</h3>
+
+          <div className="big-stat">
+            {xp}
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>LEVEL</h3>
+
+          <div className="big-stat">
+            {level}
+          </div>
+
+        </div>
+
+      </div>
+
+      <Achievements
+        completed={completed}
+        level={level}
+      />
+
+      <div className="card targets-card">
+
+        <h3>TODAY'S TARGETS</h3>
+
+        {habits.map((habit) => (
+
+          <div
+            key={habit.name}
+            className="target-row"
+          >
+
+            <span>
+              {habit.done ? "✓" : "○"}
+            </span>
+
+            <span>
+              {habit.name}
+            </span>
+
+          </div>
+
+        ))}
+
+      </div>
 
     </div>
   )

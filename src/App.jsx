@@ -119,13 +119,14 @@ export default function App() {
       <main className="main">
 
         {page === "dashboard" && (
-          <Dashboard
-            score={score}
-            completed={completed}
-            total={habits.length}
-            xp={xp}
-            level={level}
-          />
+<Dashboard
+  score={score}
+  completed={completed}
+  total={habits.length}
+  xp={xp}
+  level={level}
+  habits={habits}
+/>
         )}
 
         {page === "habits" && (
