@@ -198,6 +198,10 @@ useEffect(() => {
     const timer =
       setTimeout(() => {
 
+        console.log(
+          "Popup hidden"
+        )
+
         setPopupAchievement(
           null
         )
@@ -208,10 +212,7 @@ useEffect(() => {
       clearTimeout(timer)
   }
 
-}, [
-  completed,
-  unlockedAchievements
-])
+}, [completed,])
 
   const toggle = (index) => {
 
