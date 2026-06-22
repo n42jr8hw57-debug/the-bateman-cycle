@@ -37,6 +37,38 @@ export default function Analytics({ history }) {
       ? history[history.length - 1].score
       : 0
 
+const calendarDays = []
+
+for (let i = 89; i >= 0; i--) {
+
+  const date = new Date()
+
+  date.setDate(
+    date.getDate() - i
+  )
+
+  const label =
+    date.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        day: "numeric"
+      }
+    )
+
+  const entry =
+    history.find(
+      item =>
+        item.day === label
+    )
+
+  calendarDays.push({
+    day: label,
+    score:
+      entry?.score || 0
+  })
+}
+
   return (
 
     <div>
@@ -147,56 +179,159 @@ export default function Analytics({ history }) {
         }}
       >
 
-        <h2>HABIT CALENDAR</h2>
+<h2>90 DAY HEATMAP</h2>
 
-        <div
-          style={{
-            display:"grid",
-            gridTemplateColumns:
-              "repeat(7, 18px)",
-            gap:"8px",
-            marginTop:"20px"
-          }}
-        >
+<div
+  style={{
+    display:"flex",
+    gap:"16px",
+    marginTop:"20px"
+  }}
+>
 
-{history.map((day, index) => {
+  <div
+    style={{
+      display:"grid",
+      gridTemplateRows:"repeat(7, 18px)",
+      gap:"8px",
+      fontSize:"12px",
+      color:"#666"
+    }}
+  >
+    <div>M</div>
+    <div>T</div>
+    <div>W</div>
+    <div>T</div>
+    <div>F</div>
+    <div>S</div>
+    <div>S</div>
+  </div>
 
-  let color = "#151515"
+  <div
+    style={{
+      display:"grid",
+      gridTemplateColumns:"repeat(13, 18px)",
+      gap:"8px"
+    }}
+  >
 
-  if (day.score >= 90) {
-    color = "#ffffff"
-  }
-  else if (day.score >= 75) {
-    color = "#bdbdbd"
-  }
-  else if (day.score >= 50) {
-    color = "#7a7a7a"
-  }
-  else if (day.score > 0) {
-    color = "#3a3a3a"
-  }
+    {calendarDays.map((day, index) => {
 
-  return (
+      let color = "#151515"
 
-    <div
-      key={index}
-      title={
-        `${day.day} • ${day.score}%`
+      if (day.score >= 90) {
+        color = "#ffffff"
       }
-      style={{
-        width:"18px",
-        height:"18px",
-        borderRadius:"6px",
-        background:color,
-        transition:"0.2s"
-      }}
-    />
+      else if (day.score >= 75) {
+        color = "#bdbdbd"
+      }
+      else if (day.score >= 50) {
+        color = "#7a7a7a"
+      }
+      else if (day.score > 0) {
+        color = "#3a3a3a"
+      }
 
-  )
+      return (
+        <div
+          key={index}
+          title={`${day.day} • ${day.score}%`}
+          style={{
+            width:"18px",
+            height:"18px",
+            borderRadius:"6px",
+            background:color
+          }}
+        />
+      )
 
-})}
+    })}
 
-        </div>
+  </div>
+
+</div>
+
+<div
+  style={{
+    marginTop:"24px",
+    display:"grid",
+    gap:"10px",
+    fontSize:"13px",
+    color:"#888"
+  }}
+>
+
+  <div style={{
+    display:"flex",
+    alignItems:"center",
+    gap:"10px"
+  }}>
+    <div style={{
+      width:"14px",
+      height:"14px",
+      borderRadius:"4px",
+      background:"#151515"
+    }} />
+    <span>0% — No habits completed</span>
+  </div>
+
+  <div style={{
+    display:"flex",
+    alignItems:"center",
+    gap:"10px"
+  }}>
+    <div style={{
+      width:"14px",
+      height:"14px",
+      borderRadius:"4px",
+      background:"#3a3a3a"
+    }} />
+    <span>1–49% — Low discipline</span>
+  </div>
+
+  <div style={{
+    display:"flex",
+    alignItems:"center",
+    gap:"10px"
+  }}>
+    <div style={{
+      width:"14px",
+      height:"14px",
+      borderRadius:"4px",
+      background:"#7a7a7a"
+    }} />
+    <span>50–74% — Solid progress</span>
+  </div>
+
+  <div style={{
+    display:"flex",
+    alignItems:"center",
+    gap:"10px"
+  }}>
+    <div style={{
+      width:"14px",
+      height:"14px",
+      borderRadius:"4px",
+      background:"#bdbdbd"
+    }} />
+    <span>75–89% — Strong discipline</span>
+  </div>
+
+  <div style={{
+    display:"flex",
+    alignItems:"center",
+    gap:"10px"
+  }}>
+    <div style={{
+      width:"14px",
+      height:"14px",
+      borderRadius:"4px",
+      background:"#ffffff"
+    }} />
+    <span>90–100% — Perfect discipline</span>
+  </div>
+
+</div>
 
       </div>
 

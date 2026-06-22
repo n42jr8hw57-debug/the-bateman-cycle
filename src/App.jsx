@@ -61,8 +61,21 @@ const [unlockedAchievements, setUnlockedAchievements] =
     ]
   })
 
+
+  const [xp, setXp] = useState(() => {
+
+  const saved =
+    localStorage.getItem(
+      "bateman-xp"
+    )
+
+  return saved
+    ? Number(saved)
+    : 0
+
+})
   const [history, setHistory] = useState(() => {
-    
+
     const saved = localStorage.getItem("bateman-history")
 
     if (saved) {
@@ -86,7 +99,12 @@ const [unlockedAchievements, setUnlockedAchievements] =
     (completed / Math.max(habits.length, 1)) * 100
   )
 
-  const xp = completed * 25
+const missionBonus =
+  completed === habits.length &&
+  habits.length > 0
+    ? 100
+    : 0
+
 
   const level =
   
@@ -111,6 +129,15 @@ const [unlockedAchievements, setUnlockedAchievements] =
       JSON.stringify(history)
     )
   }, [history])
+
+  useEffect(() => {
+
+  localStorage.setItem(
+    "bateman-xp",
+    xp
+  )
+
+}, [xp])
 
   useEffect(() => {
     localStorage.setItem(
@@ -279,6 +306,38 @@ useEffect(() => {
   habits
 ])
 
+useEffect(() => {
+
+  const missionComplete =
+    completed === habits.length &&
+    habits.length > 0
+
+  if (!missionComplete)
+    return
+
+  const today =
+    new Date().toDateString()
+
+  const lastMission =
+    localStorage.getItem(
+      "bateman-last-mission"
+    )
+
+  if (lastMission === today)
+    return
+
+  setXp(prev => prev + 100)
+
+  localStorage.setItem(
+    "bateman-last-mission",
+    today
+  )
+
+}, [
+  completed,
+  habits.length
+])
+
   const toggle = (index) => {
 
     const updated = [...habits]
@@ -292,7 +351,8 @@ const today =
 if (
   updated[index].done &&
   updated[index].lastTrackedDate !== today
-) {
+
+) {  setXp(prev => prev + 25)
 
   const lastDate =
     updated[index].lastTrackedDate

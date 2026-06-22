@@ -10,13 +10,60 @@ export default function Dashboard({
   level,
   habits
 }) {
+    const greetings = {
 
-  const nextLevelXP = 100
+  NOVICE: {
+    title: "GOOD MORNING",
+    quote: "Every master was once a beginner."
+  },
 
-  const xpPercent = Math.min(
-    (xp / nextLevelXP) * 100,
-    100
-  )
+  DISCIPLINED: {
+    title: "STAY SHARP",
+    quote: "Discipline equals freedom."
+  },
+
+  EXECUTIVE: {
+    title: "KEEP EXECUTING",
+    quote: "Consistency compounds."
+  },
+
+  ELITE: {
+    title: "ELITE STATUS",
+    quote: "The standard is excellence."
+  }
+
+}
+
+const briefing =
+  greetings[level] ||
+  greetings.NOVICE
+
+let nextLevelXP = 100
+let previousLevelXP = 0
+
+if (level === "DISCIPLINED") {
+  previousLevelXP = 100
+  nextLevelXP = 250
+}
+else if (level === "EXECUTIVE") {
+  previousLevelXP = 250
+  nextLevelXP = 500
+}
+else if (level === "ELITE") {
+  previousLevelXP = 500
+  nextLevelXP = 500
+}
+
+const xpPercent =
+  level === "ELITE"
+    ? 100
+    : Math.min(
+        (
+          (xp - previousLevelXP) /
+          (nextLevelXP - previousLevelXP)
+        ) * 100,
+        100
+      )
 
   const currentStreaks = habits.map(h => h.currentStreak || 0)
 
@@ -36,8 +83,128 @@ export default function Dashboard({
       ? Math.round((completed / total) * 100)
       : 0
 
+const missionCompleted =
+  completed === total &&
+  total > 0
+
+const missionReward = 100
+
   return (
+
     <div>
+
+<div className="card">
+
+  <h2>
+    {briefing.title}
+  </h2>
+
+  <div
+    style={{
+      marginTop:"16px",
+      display:"grid",
+      gap:"10px"
+    }}
+  >
+
+    <div>
+      🔥 Current Streak:
+      {" "}
+      {Math.max(
+        ...habits.map(
+          h => h.currentStreak || 0
+        ),
+        0
+      )} days
+    </div>
+
+    <div>
+      🏆 Level:
+      {" "}
+      {level}
+    </div>
+
+    <div>
+      ✅ Today's Habits:
+      {" "}
+      {completed}/{total}
+    </div>
+
+    <div>
+      ⚡ Discipline Score:
+      {" "}
+      {score}%
+    </div>
+
+  </div>
+
+  <p
+    style={{
+      marginTop:"20px",
+      color:"#888",
+      fontStyle:"italic"
+    }}
+  >
+    "{briefing.quote}"
+  </p>
+
+</div>
+
+<div className="card">
+
+  <h2>
+    TODAY'S MISSION
+  </h2>
+
+  {!missionCompleted ? (
+
+    <>
+
+      <p>
+        Complete all habits today.
+      </p>
+
+      <div
+        style={{
+          marginTop:"16px",
+          fontSize:"14px",
+          color:"#888"
+        }}
+      >
+        Reward: +{missionReward} XP
+      </div>
+
+    </>
+
+  ) : (
+
+    <>
+
+      <div
+        style={{
+          fontSize:"22px",
+          fontWeight:"700"
+        }}
+      >
+        ✓ MISSION COMPLETE
+      </div>
+
+      <div
+        style={{
+          marginTop:"12px",
+          color:"#888"
+        }}
+      >
+        Reward Earned:
+        {" "}
+        +{missionReward} XP
+      </div>
+
+    </>
+
+  )}
+
+</div>
 
       <div className="card hero">
 
@@ -71,9 +238,14 @@ export default function Dashboard({
             {level}
           </div>
 
-          <div className="xp-info">
-            {xp} / {nextLevelXP} XP
-          </div>
+<div className="xp-info">
+
+  {level === "ELITE"
+    ? `${xp} XP`
+    : `${xp} / ${nextLevelXP} XP`
+  }
+
+</div>
 
           <div className="xp-track">
             <div
