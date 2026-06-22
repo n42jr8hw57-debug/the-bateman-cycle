@@ -18,14 +18,18 @@ export default function Dashboard({
     100
   )
 
-  const streaks = habits.map(h => h.streak || 0)
+  const currentStreaks = habits.map(h => h.currentStreak || 0)
 
-  const currentStreak =
-    streaks.length > 0
-      ? Math.max(...streaks)
-      : 0
+  const bestStreaks =
+    habits.map(h => h.bestStreak || 0)
 
-  const bestStreak = currentStreak
+  const currentStreak = currentStreaks.length > 0
+    ? Math.max(...currentStreaks)
+    : 0
+
+  const bestStreak = bestStreaks.length > 0
+    ? Math.max(...bestStreaks)
+    : 0
 
   const consistency =
     total > 0
@@ -121,6 +125,7 @@ export default function Dashboard({
       <Achievements
         completed={completed}
         level={level}
+        habits={habits}
       />
 
       <div className="card targets-card">

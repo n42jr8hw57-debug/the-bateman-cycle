@@ -2,8 +2,19 @@ import React from "react"
 
 export default function Achievements({
   completed,
-  level
+  level,
+  habits
 }) {
+
+  const streaks =
+    habits.map(
+      h => h.currentStreak || 0
+    )
+
+  const bestStreak =
+    streaks.length > 0
+      ? Math.max(...streaks)
+      : 0
 
   const achievements = [
 
@@ -15,6 +26,21 @@ export default function Achievements({
     {
       title: "PERFECT DAY",
       unlocked: completed >= 3
+    },
+
+    {
+      title: "3 DAY STREAK",
+      unlocked: bestStreak >= 3
+    },
+
+    {
+      title: "7 DAY STREAK",
+      unlocked: bestStreak >= 7
+    },
+
+    {
+      title: "30 DAY STREAK",
+      unlocked: bestStreak >= 30
     },
 
     {

@@ -22,7 +22,7 @@ export default function HabitList({
             <strong>{habit.name}</strong>
 
             <div>
-              🔥 {habit.streak}
+              🔥 {habit.currentStreak || 0}
             </div>
           </div>
 

@@ -40,19 +40,22 @@ const [unlockedAchievements, setUnlockedAchievements] =
       {
         name: "Workout",
         done: false,
-        streak: 0,
+        currentStreak: 0,
+        bestStreak: 0,
         lastTrackedDate: null
       },
       {
         name: "Reading",
         done: false,
-        streak: 0,
+        currentStreak: 0,
+        bestStreak: 0,
         lastTrackedDate: null
       },
       {
         name: "Deep Work",
         done: false,
-        streak: 0,
+        currentStreak: 0,
+        bestStreak: 0,
         lastTrackedDate: null
       }
     ]
@@ -229,7 +232,54 @@ if (
   updated[index].lastTrackedDate !== today
 ) {
 
-  updated[index].streak += 1
+  const lastDate =
+    updated[index].lastTrackedDate
+
+  if (!lastDate) {
+
+    updated[index].currentStreak = 1
+
+  } else {
+
+    const previous =
+      new Date(lastDate)
+
+    const current =
+      new Date(today)
+
+    const diffDays =
+      Math.floor(
+        (
+          current - previous
+        ) /
+        (
+          1000 *
+          60 *
+          60 *
+          24
+        )
+      )
+
+    if (diffDays === 1) {
+
+      updated[index].currentStreak += 1
+
+    } else {
+
+      updated[index].currentStreak = 1
+
+    }
+
+  }
+
+  if (
+    updated[index].currentStreak >
+    updated[index].bestStreak
+  ) {
+
+    updated[index].bestStreak =
+      updated[index].currentStreak
+  }
 
   updated[index].lastTrackedDate =
     today
@@ -247,7 +297,8 @@ if (
       {
         name,
         done: false,
-        streak: 0,
+        currentStreak: 0,
+        bestStreak: 0,
         lastTrackedDate: null
       }
     ])
@@ -287,7 +338,8 @@ const resetStreaks = () => {
   setHabits(prev =>
     prev.map(habit => ({
       ...habit,
-      streak: 0,
+      currentStreak: 0,
+      bestStreak: 0,
       lastTrackedDate: null
     }))
   )
