@@ -18,16 +18,17 @@ body{
 /* SIDEBAR */
 
 .sidebar{
-  width:190px;
-  padding:24px 18px;
+  width:260px;
+  padding:24px 20px;
   border-right:1px solid rgba(255,255,255,.05);
   background:#050505;
 }
 
 .sidebar h1{
-  font-size:42px;
+  font-size:48px;
   line-height:.9;
-  margin:0 0 20px 0;
+  margin:0;
+  margin-bottom:24px;
   font-weight:800;
   letter-spacing:-2px;
 }
@@ -133,7 +134,9 @@ body{
 .stats-grid-3{
   grid-template-columns:1fr 1fr 1fr;
 }
-
+.stats-grid-4{
+  grid-template-columns:1fr 1fr 1fr 1fr;
+}
 .stat-card{
   min-height:110px;
   padding:18px;
@@ -325,4 +328,68 @@ svg{
   .stats-grid-3{
     grid-template-columns:1fr;
   }
+}
+.analytics-summary{
+  margin-bottom:16px;
+}
+.achievement-popup{
+  position:fixed;
+  top:24px;
+  right:24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #171717,
+      #0f0f0f
+    );
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:20px;
+
+  padding:18px 20px;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  z-index:9999;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.45);
+
+  animation:
+    popupSlide .35s ease;
+}
+
+.popup-icon{
+  font-size:30px;
+}
+
+.popup-title{
+  font-size:12px;
+  opacity:.6;
+  letter-spacing:1px;
+}
+
+.popup-name{
+  font-size:16px;
+  font-weight:700;
+}
+
+@keyframes popupSlide{
+
+  from{
+    opacity:0;
+    transform:
+      translateX(40px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateX(0);
+  }
+
 }

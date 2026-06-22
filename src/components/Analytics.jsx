@@ -11,53 +11,132 @@ import {
 
 export default function Analytics({ history }) {
 
+  const scores =
+    history.map(item => item.score)
+
+  const bestDay =
+    scores.length
+      ? Math.max(...scores)
+      : 0
+
+  const average =
+    scores.length
+      ? Math.round(
+          scores.reduce(
+            (a, b) => a + b,
+            0
+          ) / scores.length
+        )
+      : 0
+
+  const trackedDays =
+    history.length
+
+  const latestScore =
+    history.length
+      ? history[history.length - 1].score
+      : 0
+
   return (
 
-    <div className="card">
+    <div>
 
-      <h2>WEEKLY DISCIPLINE</h2>
+      <div className="stats-grid stats-grid-4">
+
+        <div className="card stat-card">
+
+          <h3>LATEST</h3>
+
+          <div className="big-stat">
+            {latestScore}%
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>BEST DAY</h3>
+
+          <div className="big-stat">
+            {bestDay}%
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>AVERAGE</h3>
+
+          <div className="big-stat">
+            {average}%
+          </div>
+
+        </div>
+
+        <div className="card stat-card">
+
+          <h3>TRACKED</h3>
+
+          <div className="big-stat">
+            {trackedDays}
+          </div>
+
+        </div>
+
+      </div>
 
       <div
+        className="card"
         style={{
-          width: "100%",
-          height: "300px"
+          marginTop:"16px"
         }}
       >
 
-        <ResponsiveContainer>
+        <h2>DISCIPLINE TREND</h2>
 
-          <LineChart data={history}>
+        <div
+          style={{
+            width:"100%",
+            height:"320px"
+          }}
+        >
 
-            <XAxis dataKey="day" />
+          <ResponsiveContainer>
 
-            <YAxis
-              domain={[0, 100]}
-            />
+            <LineChart data={history}>
 
-            <Tooltip
-  contentStyle={{
-    background:"#0d0d0d",
-    border:"1px solid #222",
-    borderRadius:"16px",
-    color:"#fff",
-    boxShadow:"0 10px 30px rgba(0,0,0,.4)"
-  }}
-  labelStyle={{
-    color:"#fff",
-    fontWeight:"700"
-  }}
-/>
+              <XAxis
+                dataKey="day"
+              />
 
-            <Line
-              type="monotone"
-              dataKey="score"
-              stroke="#ffffff"
-              strokeWidth={3}
-            />
+              <YAxis
+                domain={[0,100]}
+              />
 
-          </LineChart>
+              <Tooltip
+                contentStyle={{
+                  background:"#0d0d0d",
+                  border:"1px solid #222",
+                  borderRadius:"16px",
+                  color:"#fff"
+                }}
+                labelStyle={{
+                  color:"#fff"
+                }}
+              />
 
-        </ResponsiveContainer>
+              <Line
+                type="monotone"
+                dataKey="score"
+                stroke="#ffffff"
+                strokeWidth={3}
+              />
+
+            </LineChart>
+
+          </ResponsiveContainer>
+
+        </div>
 
       </div>
 

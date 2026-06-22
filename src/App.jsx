@@ -5,10 +5,29 @@ import Dashboard from "./components/Dashboard"
 import HabitList from "./components/HabitList"
 import AddHabit from "./components/AddHabit"
 import Analytics from "./components/Analytics"
+import Settings from "./components/Settings"
+import AchievementPopup from "./components/AchievementPopup"
 
 export default function App() {
 
   const [page, setPage] = useState("dashboard")
+
+const [popupAchievement, setPopupAchievement] =
+  useState(null)
+
+const [unlockedAchievements, setUnlockedAchievements] =
+  useState(() => {
+
+    const saved =
+      localStorage.getItem(
+        "bateman-achievements"
+      )
+
+    return saved
+      ? JSON.parse(saved)
+      : []
+
+  })
 
   const [habits, setHabits] = useState(() => {
     const saved = localStorage.getItem("bateman-habits")
@@ -21,17 +40,20 @@ export default function App() {
       {
         name: "Workout",
         done: false,
-        streak: 0
+        streak: 0,
+        lastTrackedDate: null
       },
       {
         name: "Reading",
         done: false,
-        streak: 0
+        streak: 0,
+        lastTrackedDate: null
       },
       {
         name: "Deep Work",
         done: false,
-        streak: 0
+        streak: 0,
+        lastTrackedDate: null
       }
     ]
   })
@@ -94,6 +116,17 @@ export default function App() {
 
   useEffect(() => {
 
+  localStorage.setItem(
+    "bateman-achievements",
+    JSON.stringify(
+      unlockedAchievements
+    )
+  )
+
+}, [unlockedAchievements])
+
+  useEffect(() => {
+
     const today =
       new Date().toDateString()
 
@@ -139,6 +172,47 @@ export default function App() {
 
   }, [])
 
+useEffect(() => {
+
+  const achievement =
+    "FIRST HABIT"
+
+  if (
+    completed >= 1 &&
+    !unlockedAchievements.includes(
+      achievement
+    )
+  ) {
+
+    setUnlockedAchievements(
+      prev => [
+        ...prev,
+        achievement
+      ]
+    )
+
+    setPopupAchievement(
+      achievement
+    )
+
+    const timer =
+      setTimeout(() => {
+
+        setPopupAchievement(
+          null
+        )
+
+      }, 3000)
+
+    return () =>
+      clearTimeout(timer)
+  }
+
+}, [
+  completed,
+  unlockedAchievements
+])
+
   const toggle = (index) => {
 
     const updated = [...habits]
@@ -146,9 +220,19 @@ export default function App() {
     updated[index].done =
       !updated[index].done
 
-    if (updated[index].done) {
-      updated[index].streak += 1
-    }
+const today =
+  new Date().toDateString()
+
+if (
+  updated[index].done &&
+  updated[index].lastTrackedDate !== today
+) {
+
+  updated[index].streak += 1
+
+  updated[index].lastTrackedDate =
+    today
+}
 
     setHabits(updated)
   }
@@ -162,7 +246,8 @@ export default function App() {
       {
         name,
         done: false,
-        streak: 0
+        streak: 0,
+        lastTrackedDate: null
       }
     ])
   }
@@ -190,9 +275,69 @@ export default function App() {
     setHabits(updated)
   }
 
+const resetStreaks = () => {
+
+  if (
+    !window.confirm(
+      "Reset all streaks?"
+    )
+  ) return
+
+  setHabits(prev =>
+    prev.map(habit => ({
+      ...habit,
+      streak: 0,
+      lastTrackedDate: null
+    }))
+  )
+}
+
+const resetAchievements = () => {
+
+  if (
+    !window.confirm(
+      "Reset achievements?"
+    )
+  ) return
+
+  localStorage.removeItem(
+    "bateman-achievements"
+  )
+
+  window.location.reload()
+}
+
+const resetAnalytics = () => {
+
+  if (
+    !window.confirm(
+      "Reset analytics?"
+    )
+  ) return
+
+  setHistory([])
+}
+
+const factoryReset = () => {
+
+  if (
+    !window.confirm(
+      "Delete ALL data?"
+    )
+  ) return
+
+  localStorage.clear()
+
+  window.location.reload()
+}
+
   return (
 
     <div className="app">
+
+      <AchievementPopup
+  achievement={popupAchievement}
+/>
 
       <Sidebar
         setPage={setPage}
@@ -233,14 +378,20 @@ export default function App() {
           />
         )}
 
-        {page === "settings" && (
-          <div className="card">
-            <h2>SETTINGS</h2>
-            <p>
-              More settings coming soon.
-            </p>
-          </div>
-        )}
+{page === "settings" && (
+  <Settings
+    resetStreaks={resetStreaks}
+    resetAchievements={
+      resetAchievements
+    }
+    resetAnalytics={
+      resetAnalytics
+    }
+    factoryReset={
+      factoryReset
+    }
+  />
+)}
 
       </main>
 
