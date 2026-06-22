@@ -62,6 +62,7 @@ const [unlockedAchievements, setUnlockedAchievements] =
   })
 
   const [history, setHistory] = useState(() => {
+    
     const saved = localStorage.getItem("bateman-history")
 
     if (saved) {
@@ -88,6 +89,7 @@ const [unlockedAchievements, setUnlockedAchievements] =
   const xp = completed * 25
 
   const level =
+  
     xp >= 500
       ? "ELITE"
       : xp >= 250
@@ -158,7 +160,7 @@ const [unlockedAchievements, setUnlockedAchievements] =
           ...prev,
           {
             day: label,
-            score
+            score: score
           }
         ])
       }
@@ -177,45 +179,105 @@ const [unlockedAchievements, setUnlockedAchievements] =
 
 useEffect(() => {
 
-  const achievement =
-    "FIRST HABIT"
-
-  if (
-    completed >= 1 &&
-    !unlockedAchievements.includes(
-      achievement
-    )
-  ) {
-
-    setUnlockedAchievements(
-      prev => [
-        ...prev,
-        achievement
-      ]
+  const streaks =
+    habits.map(
+      h => h.bestStreak || 0
     )
 
-    setPopupAchievement(
-      achievement
-    )
+  const bestStreak =
+    streaks.length > 0
+      ? Math.max(...streaks)
+      : 0
 
-    const timer =
-      setTimeout(() => {
+  const achievements = [
 
-        console.log(
-          "Popup hidden"
+    {
+      title: "FIRST HABIT",
+      unlocked: completed >= 1
+    },
+
+    {
+      title: "PERFECT DAY",
+      unlocked: completed >= 3
+    },
+
+    {
+      title: "3 DAY STREAK",
+      unlocked: bestStreak >= 3
+    },
+
+    {
+      title: "7 DAY STREAK",
+      unlocked: bestStreak >= 7
+    },
+
+    {
+      title: "30 DAY STREAK",
+      unlocked: bestStreak >= 30
+    },
+
+    {
+      title: "DISCIPLINED",
+      unlocked:
+        level === "DISCIPLINED" ||
+        level === "EXECUTIVE" ||
+        level === "ELITE"
+    },
+
+    {
+      title: "EXECUTIVE",
+      unlocked:
+        level === "EXECUTIVE" ||
+        level === "ELITE"
+    },
+
+    {
+      title: "ELITE",
+      unlocked:
+        level === "ELITE"
+    }
+
+  ]
+
+  const newAchievement =
+    achievements.find(
+      achievement =>
+        achievement.unlocked &&
+        !unlockedAchievements.includes(
+          achievement.title
         )
+    )
 
-        setPopupAchievement(
-          null
-        )
+  if (!newAchievement) return
 
-      }, 3000)
+  setUnlockedAchievements(
+    prev => [
+      ...prev,
+      newAchievement.title
+    ]
+  )
 
-    return () =>
-      clearTimeout(timer)
-  }
+  setPopupAchievement(
+    newAchievement.title
+  )
 
-}, [completed,])
+  const timer =
+    setTimeout(() => {
+
+      setPopupAchievement(
+        null
+      )
+
+    }, 5000)
+
+  return () =>
+    clearTimeout(timer)
+
+}, [
+  completed,
+  level,
+  habits
+])
 
   const toggle = (index) => {
 

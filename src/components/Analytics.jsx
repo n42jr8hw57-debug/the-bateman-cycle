@@ -140,6 +140,66 @@ export default function Analytics({ history }) {
 
       </div>
 
+      <div
+        className="card"
+        style={{
+          marginTop:"16px"
+        }}
+      >
+
+        <h2>HABIT CALENDAR</h2>
+
+        <div
+          style={{
+            display:"grid",
+            gridTemplateColumns:
+              "repeat(7, 18px)",
+            gap:"8px",
+            marginTop:"20px"
+          }}
+        >
+
+{history.map((day, index) => {
+
+  let color = "#151515"
+
+  if (day.score >= 90) {
+    color = "#ffffff"
+  }
+  else if (day.score >= 75) {
+    color = "#bdbdbd"
+  }
+  else if (day.score >= 50) {
+    color = "#7a7a7a"
+  }
+  else if (day.score > 0) {
+    color = "#3a3a3a"
+  }
+
+  return (
+
+    <div
+      key={index}
+      title={
+        `${day.day} • ${day.score}%`
+      }
+      style={{
+        width:"18px",
+        height:"18px",
+        borderRadius:"6px",
+        background:color,
+        transition:"0.2s"
+      }}
+    />
+
+  )
+
+})}
+
+        </div>
+
+      </div>
+
     </div>
 
   )
